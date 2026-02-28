@@ -5,37 +5,30 @@ import com.FinalExam.SirmaFinalExam.Models.Players;
 import com.FinalExam.SirmaFinalExam.Models.Records;
 import com.FinalExam.SirmaFinalExam.Models.Teams;
 import com.FinalExam.SirmaFinalExam.Services.MainService;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.FinalExam.SirmaFinalExam.Services.PlayersService;
+import com.FinalExam.SirmaFinalExam.Services.TeamsService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class MainController {
 
     private final MainService mainService;
+    private final PlayersService playersService;
+    private final TeamsService teamsService;
 
-    public MainController(MainService mainService) {
+    public MainController(MainService mainService,
+                          PlayersService playersService, TeamsService teamsService) {
         this.mainService = mainService;
+        this.playersService = playersService;
+        this.teamsService = teamsService;
     }
 
-    @GetMapping("/")
-    public List<Players> getAllPlayers() {
-        return this.mainService.getPlayers();
-    }
 
-    @GetMapping("/teams")
-    public List<Teams> getAllTeams() {
-        return this.mainService.getTeams();
-    }
 
-    @GetMapping("/records")
-    public List<Records> getAllRecords() {
-        return this.mainService.getRecords();
-    }
 
-    @GetMapping("/matches")
-    public List<Matches> getAllMatches() {
-        return this.mainService.getMatches();
-    }
 }
