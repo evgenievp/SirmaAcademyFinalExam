@@ -22,14 +22,14 @@ public class RecordsController {
         this.recordsService = recordsService;
     }
 
-    @PostMapping("saveAll")
+    @PostMapping("/saveAll")
     public ResponseEntity saveAllRecords() {
         this.recordsService.saveAllRecords();
         return ResponseEntity.status(201).body("records are saved");
     }
 
 
-    @PostMapping("deleteAll/")
+    @PostMapping("deleteAll")
     public ResponseEntity deleteAllRecords() {
         this.recordsService.deleteAllRecords();
         return ResponseEntity.ok("all records are deleted");

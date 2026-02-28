@@ -30,7 +30,7 @@ public class PlayersController {
         return ResponseEntity.status(201).body("All players are saved");
     }
 
-    @PostMapping("/deleteAll/")
+    @PostMapping("/deleteAll")
     public ResponseEntity deleteAllPlayers() {
         this.playersService.deleteAllPlayers();
         return ResponseEntity.status(200).body("all players are deleted");

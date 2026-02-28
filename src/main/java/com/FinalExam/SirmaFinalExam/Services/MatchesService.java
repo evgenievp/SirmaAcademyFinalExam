@@ -4,9 +4,11 @@ import com.FinalExam.SirmaFinalExam.CSVDrivers.MatchesCSVReader;
 import com.FinalExam.SirmaFinalExam.Dtos.MatchDto;
 import com.FinalExam.SirmaFinalExam.Models.Matches;
 import com.FinalExam.SirmaFinalExam.Repos.MatchesRepo;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MatchesService {
     private final MatchesRepo matchesRepo;
     private final MatchesCSVReader matchesCSVReader;

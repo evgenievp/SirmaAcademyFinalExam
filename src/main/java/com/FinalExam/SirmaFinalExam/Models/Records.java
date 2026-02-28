@@ -20,7 +20,7 @@ public class Records {
     private int playerId;
     @Min(value = 1)
     private int matchId;
-    @Min(value = 1)
+    @Min(value = 0)
     private int fromMinutes;
     private int toMinutes; // this can be null, but I will always read it as 90th minute
 

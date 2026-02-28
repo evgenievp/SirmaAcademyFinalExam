@@ -38,7 +38,7 @@ public class RecordsCSVReader {
                 int playerId = Integer.parseInt(newRecord[1]);
                 int matchId = Integer.parseInt(newRecord[2]);
                 int fromMinutes = Integer.parseInt(newRecord[3]);
-                String toMinutesText = newRecord[3];
+                String toMinutesText = newRecord[4];
                 int toMinutes = 90;
                 if (toMinutesText.equals("NULL")) { // copy "NULL" as it written in csv file
                     toMinutes = 90;

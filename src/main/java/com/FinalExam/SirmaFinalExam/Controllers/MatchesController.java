@@ -27,14 +27,14 @@ public class MatchesController {
         return this.matchesService.getMatches();
     }
 
-    @PostMapping("saveAll/Matches")
+    @PostMapping("saveAll")
     public ResponseEntity saveAllMatches() {
         this.matchesService.saveAllMatches();
         return ResponseEntity.status(201).body("matches are saved");
     }
 
 
-    @PostMapping("deleteAll/matches")
+    @PostMapping("deleteAll")
     public ResponseEntity deleteAllMatches() {
         this.matchesService.deleteAllMatches();
         return ResponseEntity.ok("all matches are deleted");

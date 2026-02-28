@@ -4,9 +4,11 @@ import com.FinalExam.SirmaFinalExam.CSVDrivers.RecordsCSVReader;
 import com.FinalExam.SirmaFinalExam.Dtos.RecordsDto;
 import com.FinalExam.SirmaFinalExam.Models.Records;
 import com.FinalExam.SirmaFinalExam.Repos.RecordsRepo;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RecordsService {
 
     private final RecordsCSVReader recordsCSVReader;
