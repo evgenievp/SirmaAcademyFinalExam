@@ -1,13 +1,11 @@
 package com.FinalExam.SirmaFinalExam.Controllers;
 
 import com.FinalExam.SirmaFinalExam.CSVDrivers.TeamsCSVReader;
+import com.FinalExam.SirmaFinalExam.Dtos.TeamDto;
 import com.FinalExam.SirmaFinalExam.Models.Teams;
 import com.FinalExam.SirmaFinalExam.Services.TeamsService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +19,25 @@ public class TeamsController {
         this.teamsService = teamsService;
         this.teamsCSVReader = teamsCSVReader;
     }
+
+    @PostMapping("/addTeam")
+    public ResponseEntity addTeam(@RequestBody TeamDto team) {
+        this.teamsService.addTeam(team);
+        return ResponseEntity.status(201).body("Team added to db");
+    }
+
+    @PatchMapping("/editTeam/{id}")
+    public ResponseEntity<TeamDto> editTeam(@RequestBody TeamDto dto, @PathVariable int id) {
+        this.teamsService.editTeam(dto, id);
+        return ResponseEntity.status(200).body(this.convertTeamToDto(this.teamsService.findTeamById(id)));
+    }
+
+    private TeamDto convertTeamToDto(Teams team) {
+        return new TeamDto(team.getName(),
+                team.getManagerFullName(),
+                team.getteamGroup());
+    }
+
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Teams>> getAllTeams() {

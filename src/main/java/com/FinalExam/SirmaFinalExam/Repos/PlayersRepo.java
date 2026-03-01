@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PlayersRepo extends JpaRepository<Players, Integer> {
-    Optional<List<Players>> findByFullName(String playerName);
-
     Optional<Players> getPlayerById(int id);
 }
 

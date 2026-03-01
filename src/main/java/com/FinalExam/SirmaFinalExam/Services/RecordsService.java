@@ -19,7 +19,6 @@ public class RecordsService {
         this.recordsRepo = recordsRepo;
     }
 
-
     public List<Records> getRecords() {
         return this.recordsCSVReader.getRecordsList();
     }
