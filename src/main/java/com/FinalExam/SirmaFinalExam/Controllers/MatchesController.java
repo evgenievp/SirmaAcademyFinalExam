@@ -1,15 +1,14 @@
 package com.FinalExam.SirmaFinalExam.Controllers;
 
 import com.FinalExam.SirmaFinalExam.CSVDrivers.MatchesCSVReader;
+import com.FinalExam.SirmaFinalExam.Dtos.MatchDto;
 import com.FinalExam.SirmaFinalExam.Models.Matches;
 import com.FinalExam.SirmaFinalExam.Services.MatchesService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/matches")
@@ -20,6 +19,25 @@ public class MatchesController {
     public MatchesController(MatchesService matchesService, MatchesCSVReader matchesCSVReader) {
         this.matchesService = matchesService;
         this.matchesCSVReader = matchesCSVReader;
+    }
+
+    @PostMapping("/addMatch")
+    public ResponseEntity addMatch(@RequestBody MatchDto dto) {
+        this.matchesService.addMatch(dto);
+        return ResponseEntity.status(201).body("Match is added to db");
+    }
+
+    @PostMapping("/deleteMatch/{id}")
+    public ResponseEntity<MatchDto> deleteMatch(@PathVariable int id) {
+        MatchDto match = this.matchesService.findMatchById(id);
+        this.matchesService.deleteMatch(id);
+        return ResponseEntity.status(200).body(match);
+    }
+
+    @PatchMapping("/editMatch/{id}")
+    public ResponseEntity editMatch(@PathVariable int id, @RequestBody MatchDto dto) {
+        this.matchesService.editMatch(dto, id);
+        return ResponseEntity.status(200).body(this.matchesService.findMatchById(id));
     }
 
     @GetMapping("/matches")

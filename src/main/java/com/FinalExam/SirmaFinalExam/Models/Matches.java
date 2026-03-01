@@ -33,10 +33,9 @@ public class Matches {
         this.ATeamId = ATeamId;
         this.BTeamId = BTeamId;
         this.date = date;
-        HomeTeamGoals = homeTeamGoals;
-        AwayTeamGoals = awayTeamGoals;
+        this.HomeTeamGoals = homeTeamGoals;
+        this.AwayTeamGoals = awayTeamGoals;
     }
-
 
     public int getId() {
         return this.id;

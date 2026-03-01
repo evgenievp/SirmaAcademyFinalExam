@@ -1,9 +1,5 @@
 package com.FinalExam.SirmaFinalExam.Controllers;
 
-import com.FinalExam.SirmaFinalExam.Models.Matches;
-import com.FinalExam.SirmaFinalExam.Models.Players;
-import com.FinalExam.SirmaFinalExam.Models.Records;
-import com.FinalExam.SirmaFinalExam.Models.Teams;
 import com.FinalExam.SirmaFinalExam.Services.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +29,8 @@ public class MainController {
     }
 
     @GetMapping("/playersPairPlayedMostTime")
-    public ResponseEntity<List<Players>> getPlayersPair() {
-        return ResponseEntity.status(20).body(this.mainService.getMostTimePlayedPlayersPair());
+    public ResponseEntity<List<Object[]>> getPlayersPair() {
+        return ResponseEntity.status(200).body(this.mainService.getMostTimePlayedPlayersPair());
     }
 
     @PostMapping("/initAll")

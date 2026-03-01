@@ -4,9 +4,12 @@ import com.FinalExam.SirmaFinalExam.CSVDrivers.MatchesCSVReader;
 import com.FinalExam.SirmaFinalExam.Dtos.MatchDto;
 import com.FinalExam.SirmaFinalExam.Models.Matches;
 import com.FinalExam.SirmaFinalExam.Repos.MatchesRepo;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MatchesService {
@@ -50,5 +53,40 @@ public class MatchesService {
                 dto.getHomeScore(),
                 dto.getAwayScore()
         );
+    }
+
+    public void addMatch(MatchDto dto) {
+        Matches match = convertDtoToMatch(dto);
+        this.matchesRepo.save(match);
+    }
+
+    public MatchDto findMatchById(int id) {
+        Optional<Matches> opt = this.matchesRepo.findById(id);
+        if (opt.isEmpty()) {
+            throw new EntityNotFoundException("No entity in db with this id");
+        }
+        else {
+            return convertMatchToDto(opt.get());
+        }
+    }
+
+    public void deleteMatch(int id) {
+        this.matchesRepo.deleteById(id);
+    }
+
+    public void editMatch(MatchDto dto, int id) {
+        Optional<Matches> match = this.matchesRepo.getMatchById(id);
+        if (match.isEmpty()) {
+            throw new EntityNotFoundException("Entity with id isn't in this db");
+        }
+        Matches matchEntity = match.get();
+        matchEntity.setATeamId(dto.getATeamId());
+        matchEntity.setAwayTeamGoals(dto.getAwayScore());
+        matchEntity.setBTeamId(dto.getBTeamId());
+        matchEntity.setDate(dto.getDate());
+        matchEntity.setHomeTeamGoals(dto.getHomeScore());
+        matchEntity.setAwayTeamGoals(dto.getAwayScore());
+        this.matchesRepo.save(matchEntity);
+
     }
 }

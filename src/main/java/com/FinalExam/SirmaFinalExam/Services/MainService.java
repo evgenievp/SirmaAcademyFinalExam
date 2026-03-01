@@ -1,6 +1,5 @@
 package com.FinalExam.SirmaFinalExam.Services;
 
-import com.FinalExam.SirmaFinalExam.Models.Players;
 import com.FinalExam.SirmaFinalExam.Repos.MainRepo;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +14,8 @@ public class MainService {
         this.mainRepo = mainRepo1;
     }
 
-    public List<Players> getMostTimePlayedPlayersPair() {
-        return this.mainRepo.pairPlayedMostTime();
+    public List<Object[]> getMostTimePlayedPlayersPair() {
+        return this.mainRepo.getPlayerPairsWithMostTime();
     }
 
 
