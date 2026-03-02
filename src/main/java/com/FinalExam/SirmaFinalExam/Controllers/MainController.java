@@ -28,7 +28,7 @@ public class MainController {
         this.matchesService = matchesService;
     }
 
-    @GetMapping("/playersPairPlayedMostTime")
+    @GetMapping("/pair-played-most-time-info")
     public ResponseEntity<List<Object[]>> getPlayersPair() {
         return ResponseEntity.status(200).body(this.mainService.getMostTimePlayedPlayersPair());
     }
