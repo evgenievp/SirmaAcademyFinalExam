@@ -39,7 +39,7 @@ public class TeamsCSVReader {
                 String wholeText = newTeam[3];
                 char group = wholeText.charAt(0);
                 this.teamsList.add(
-                        new Teams(id,
+                        new Teams(
                                 name,
                                 managerFullName,
                                 group)

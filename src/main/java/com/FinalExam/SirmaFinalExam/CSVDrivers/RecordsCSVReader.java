@@ -48,7 +48,6 @@ public class RecordsCSVReader {
                 }
                 this.recordsList.add(
                         new Records(
-                                id,
                                 playerId,
                                 matchId,
                                 fromMinutes,

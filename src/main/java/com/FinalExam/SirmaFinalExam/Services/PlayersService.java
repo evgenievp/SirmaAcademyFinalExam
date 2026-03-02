@@ -5,6 +5,7 @@ import com.FinalExam.SirmaFinalExam.Dtos.PlayerDto;
 import com.FinalExam.SirmaFinalExam.Models.Players;
 import com.FinalExam.SirmaFinalExam.Repos.PlayersRepo;
 import jakarta.persistence.EntityNotFoundException;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class PlayersService {
         return new Players(
                 dto.getTeamNumber(),
                 dto.getPosition(),
-                dto.getFullname(),
+                dto.getFullName(),
                 dto.getTeamId()
         );
     }
@@ -74,10 +75,18 @@ public class PlayersService {
             throw new EntityNotFoundException("Player with that id isn't in this db");
         }
         Players playerEntity = player.get();
-        playerEntity.setFullName(dto.getFullname());
+        playerEntity.setFullName(dto.getFullName());
         playerEntity.setPosition(dto.getPosition());
         playerEntity.setTeamId(dto.getTeamId());
         playerEntity.setTeamNumber(dto.getTeamNumber());
         this.playersRepo.save(playerEntity);
+    }
+
+    public PlayerDto getPlayerById(int id) {
+        Optional<Players> player = this.playersRepo.getPlayerById(id);
+        if (player.isEmpty()) {
+            throw new EntityNotFoundException("No player with this id in db");
+        }
+        return convertPlayerToDto(player.get());
     }
 }

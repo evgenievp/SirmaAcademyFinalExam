@@ -42,7 +42,6 @@ public class PlayersCSVReader {
                 int teamId = Integer.parseInt(newPlayer[4]);
                 this.playersList.add(
                         new Players(
-                                id,
                                 teamNumber,
                                 position,
                                 fullName,

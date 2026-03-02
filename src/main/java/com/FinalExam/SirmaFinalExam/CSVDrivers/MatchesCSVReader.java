@@ -71,7 +71,6 @@ public class MatchesCSVReader {
                 }
 
                 this.matchesList.add(new Matches(
-                        id,
                         aTeamId,
                         bTeamId,
                         result,

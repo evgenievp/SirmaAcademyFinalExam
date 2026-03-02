@@ -70,6 +70,5 @@ public class TeamsService {
         teamEntity.setName(dto.getName());
         teamEntity.setteamGroup(dto.getTeamGroup());
         this.teamsRepo.save(teamEntity);
-
     }
 }
