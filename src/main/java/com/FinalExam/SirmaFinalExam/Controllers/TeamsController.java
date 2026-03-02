@@ -45,6 +45,14 @@ public class TeamsController {
                 team.getteamGroup());
     }
 
+    @PostMapping("/delete/{id}")
+    public ResponseEntity deleteTeamById(@PathVariable int id) {
+        Teams team = this.teamsService.findTeamById(id);
+        TeamDto dto = convertTeamToDto(team);
+        this.teamsService.deleteTeamById(id);
+        return ResponseEntity.status(200).body(dto);
+    }
+
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Teams>> getAllTeams() {

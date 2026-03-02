@@ -8,5 +8,4 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface MatchesRepo extends JpaRepository<Matches, Integer> {
-    Optional<Matches> getMatchById(int id);
 }

@@ -6,7 +6,6 @@ import com.FinalExam.SirmaFinalExam.Models.Matches;
 import com.FinalExam.SirmaFinalExam.Repos.MatchesRepo;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -71,11 +70,16 @@ public class MatchesService {
     }
 
     public void deleteMatch(int id) {
-        this.matchesRepo.deleteById(id);
+        if (this.matchesRepo.findById(id).isPresent()) {
+            this.matchesRepo.deleteById(id);
+        }
+        else {
+            throw new EntityNotFoundException("No match with that id in db");
+        }
     }
 
     public void editMatch(MatchDto dto, int id) {
-        Optional<Matches> match = this.matchesRepo.getMatchById(id);
+        Optional<Matches> match = this.matchesRepo.findById(id);
         if (match.isEmpty()) {
             throw new EntityNotFoundException("Entity with id isn't in this db");
         }
@@ -87,6 +91,5 @@ public class MatchesService {
         matchEntity.setHomeTeamGoals(dto.getHomeScore());
         matchEntity.setAwayTeamGoals(dto.getAwayScore());
         this.matchesRepo.save(matchEntity);
-
     }
 }

@@ -66,11 +66,16 @@ public class PlayersService {
     }
 
     public void deletePlayerById(int id) {
-        this.playersRepo.deleteById(id);
+        if (this.playersRepo.findById(id).isPresent()) {
+            this.playersRepo.deleteById(id);
+        }
+        else {
+            throw new EntityNotFoundException("No player with this id in db");
+        }
     }
 
     public void editPlayer(PlayerDto dto, int id) {
-        Optional<Players> player = this.playersRepo.getPlayerById(id);
+        Optional<Players> player = this.playersRepo.findById(id);
         if (player.isEmpty()) {
             throw new EntityNotFoundException("Player with that id isn't in this db");
         }
@@ -83,7 +88,7 @@ public class PlayersService {
     }
 
     public PlayerDto getPlayerById(int id) {
-        Optional<Players> player = this.playersRepo.getPlayerById(id);
+        Optional<Players> player = this.playersRepo.findById(id);
         if (player.isEmpty()) {
             throw new EntityNotFoundException("No player with this id in db");
         }

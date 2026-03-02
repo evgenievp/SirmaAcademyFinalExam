@@ -71,4 +71,13 @@ public class TeamsService {
         teamEntity.setteamGroup(dto.getTeamGroup());
         this.teamsRepo.save(teamEntity);
     }
+
+    public void deleteTeamById(int id) {
+        if (this.teamsRepo.findById(id).isPresent()) {
+            this.teamsRepo.deleteById(id);
+        }
+        else {
+            throw new EntityNotFoundException("No team with this id in db");
+        }
+    }
 }
