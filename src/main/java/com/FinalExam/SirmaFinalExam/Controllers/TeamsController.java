@@ -28,8 +28,7 @@ public class TeamsController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<Teams> getTeamById(@Valid @RequestBody TeamDto team, @PathVariable int id) {
-        this.teamsService.editTeam(team, id);
+    public ResponseEntity<Teams> getTeamById(@PathVariable int id) {
         return ResponseEntity.status(200).body(this.teamsService.findTeamById(id));
     }
 

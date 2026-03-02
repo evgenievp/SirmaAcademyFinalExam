@@ -53,7 +53,7 @@ public class TeamsService {
     }
 
     public Teams findTeamById(int id) {
-        Optional<Teams> team = this.teamsRepo.getTeamById(id);
+        Optional<Teams> team = this.teamsRepo.findById(id);
         if (team.isEmpty()) {
             throw new EntityNotFoundException("Team with that id isn't in this db");
         }
@@ -61,7 +61,7 @@ public class TeamsService {
     }
 
     public void editTeam(TeamDto dto, int id) {
-        Optional<Teams> team = this.teamsRepo.getTeamById(id);
+        Optional<Teams> team = this.teamsRepo.findById(id);
         if (team.isEmpty()) {
             throw new EntityNotFoundException("Can't edit team with that id");
         }

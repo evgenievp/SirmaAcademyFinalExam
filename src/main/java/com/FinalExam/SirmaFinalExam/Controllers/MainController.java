@@ -43,7 +43,7 @@ public class MainController {
     }
 
 
-    @PostMapping("/deleteEverything")
+    @PostMapping("/deleteAll")
     public ResponseEntity deleteEverything() {
         playersService.deleteAllPlayers();
         teamsService.deleteAllTeams();

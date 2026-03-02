@@ -28,6 +28,11 @@ public class MatchesController {
         return ResponseEntity.status(201).body("Match is added to db");
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<MatchDto> getMatchById(@PathVariable int id) {
+        return ResponseEntity.status(200).body(this.matchesService.findMatchById(id));
+    }
+
     @PostMapping("/delete/{id}")
     public ResponseEntity<MatchDto> deleteMatch(@Valid @PathVariable int id) {
         MatchDto match = this.matchesService.findMatchById(id);
