@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -101,19 +102,44 @@ public class MatchesCSVReader {
     }
 
     private LocalDate parseDate(String dateString) {
-        Pattern pattern = Pattern.compile("(0?[1-9]|1[0-2]).(0?[1-9]|[12][0-9]|3[01]).(20[0-9]{2})");
+        /* I'm out of ideas how to cover this...
+        So I will use KISS principle - change just places of year/month and day with any symbol separator
+        I mean... ANY symbol separator... Maybe this is not the best solution, but... I did it */
+        Pattern pattern1 = Pattern.compile("(0?[1-9]|1[0-2]).(0?[1-9]|[12][0-9]|3[01]).(20[0-9]{2})"); //mm/dd/yyyy
+        Pattern pattern2 = Pattern.compile("(0?[1-9]|[12][0-9]|3[01]).(0?[1-9]|1[0-2]).(20[0-9]{2})"); //dd/mm/yyyy
+        Pattern pattern3 = Pattern.compile("(20[0-9]{2}).(0?[1-9]|1[0-2]).(0?[1-9]|[12][0-9]|3[01])"); //yyyy/mm/dd
+        Pattern pattern4 = Pattern.compile("(20[0-9]{2}).(0?[1-9]|[12][0-9]|3[01]).(0?[1-9]|1[0-2])"); //yyyy/dd/mm
+        Pattern pattern5 = Pattern.compile("(0?[1-9]|[12][0-9]|3[01]).(20[0-9]{2}).(0?[1-9]|1[0-2])"); //dd/yyyy/mm
+        Pattern pattern6 = Pattern.compile("(0?[1-9]|1[0-2]).(20[0-9]{2}).(0?[1-9]|[12][0-9]|3[01])"); //mm/yyyy/dd
 
-        Matcher matcher = pattern.matcher(dateString.trim());
-        if (matcher.matches()) {
-            int month = Integer.parseInt(matcher.group(1));
-            int day = Integer.parseInt(matcher.group(2));
-            int year = Integer.parseInt(matcher.group(3));
-
-            return LocalDate.of(year, month, day);
+        List<Pattern> patterns = List.of(pattern1,
+                pattern2,
+                pattern3,
+                pattern4,
+                pattern5,
+                pattern6);
+        int [][] orders = {
+                {3,1,2},
+                {3,2,1},
+                {1,2,3},
+                {1,3,2},
+                {2,3,1},
+                {2,1,3}
+        };
+        // These dummy variables will result in year in case of really big edge case or intentionally bad csv file.
+        int year = 1000;
+        int day = 20;
+        int month = 10;
+        for (int i = 0; i < patterns.size(); i ++) {
+            Matcher matcher = patterns.get(i).matcher(dateString.trim());
+            if (matcher.matches()) {
+                year = Integer.parseInt(matcher.group(orders[i][0]));
+                month = Integer.parseInt(matcher.group(orders[i][1]));
+                day = Integer.parseInt(matcher.group(orders[i][2]));
+                return LocalDate.of(year, month, day);
+            }
         }
-        else {
-            throw new IllegalArgumentException("Invalid format");
-        }
+        return LocalDate.of(year, month, day);
     }
 
 
