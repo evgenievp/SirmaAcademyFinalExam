@@ -84,7 +84,7 @@ Run the Application:
   
   Example JSON bodies for CRUD endpoints:
   
-  Note: When adding players, the JSON must not contain an id field.
+  Note: When adding players, matches or teams the JSON must not contain an id field.
 
 For players:
 
