@@ -18,5 +18,8 @@ public class MainService {
         return this.mainRepo.getPlayerPairsWithMostTime();
     }
 
+    public Object[] justPair() {
+        return this.mainRepo.pairOfPlayers();
+    }
 
 }

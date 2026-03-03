@@ -33,6 +33,12 @@ public class MainController {
         return ResponseEntity.status(200).body(this.mainService.getMostTimePlayedPlayersPair());
     }
 
+    @GetMapping("/just-pair")
+    public ResponseEntity<Object[]> justPair() {
+        return ResponseEntity.status(200).body(this.mainService.justPair());
+    }
+
+
     @PostMapping("/initAll")
     public ResponseEntity saveEverything() {
         this.playersService.saveAllPlayers();

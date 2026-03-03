@@ -66,4 +66,25 @@ public interface MainRepo extends JpaRepository<Records, Integer> {
     order by md.minutes_together desc
 """)
     List<Object[]> getPlayerPairsWithMostTime();
+
+
+    @Query(nativeQuery = true, value = """
+            with players_and_minutes as (
+                select p1.full_name as player_1, p2.full_name as player_2, sum(
+                dbo.getMinMinutes(r1.to_minutes, r2.to_minutes) -\s
+                dbo.getMaxMinutes(r1.from_minutes, r2.from_minutes))
+                as total_minutes
+                from records r1\s
+                JOIN records r2 on r1.match_id = r2.match_id
+                join players p1 on p1.id = r1.player_id
+                join players p2 on p2.id = r2.player_id
+                where r1.player_id < r2.player_id AND
+                r1.from_minutes < r2.to_minutes
+                and r2.from_minutes < r1.to_minutes
+                group by p1.full_name, p2.full_name
+            )
+            select top 1 * from players_and_minutes order by total_minutes desc;
+            
+            """)
+    Object[] pairOfPlayers();
 }

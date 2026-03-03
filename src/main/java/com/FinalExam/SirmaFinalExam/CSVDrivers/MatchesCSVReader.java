@@ -9,11 +9,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class MatchesCSVReader {
@@ -42,9 +45,10 @@ public class MatchesCSVReader {
                 int id = Integer.parseInt(match[0]);
                 int aTeamId = Integer.parseInt(match[1]);
                 int bTeamId = Integer.parseInt(match[2]);
-                String date = match[3];
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
-                LocalDate result = LocalDate.parse(date, dateFormatter);
+                String dateStr = match[3];
+                LocalDate date = parseDate(dateStr);
+
+
                 String[] goals = match[4].split("-");
                 int[] results = new int[2];
 
@@ -73,7 +77,7 @@ public class MatchesCSVReader {
                 this.matchesList.add(new Matches(
                         aTeamId,
                         bTeamId,
-                        result,
+                        date,
                         homeScore,
                         awayScore
                 ));
@@ -100,6 +104,22 @@ public class MatchesCSVReader {
         results[1] = getResultFromPenalties(awayTeam);
 
         return results;
+    }
+
+    private LocalDate parseDate(String dateString) {
+        Pattern pattern = Pattern.compile("(0?[1-9]|1[0-2]).(0?[1-9]|[12][0-9]|3[01]).(20[0-9]{2})");
+
+        Matcher matcher = pattern.matcher(dateString.trim());
+        if (matcher.matches()) {
+            int month = Integer.parseInt(matcher.group(1));
+            int day = Integer.parseInt(matcher.group(2));
+            int year = Integer.parseInt(matcher.group(3));
+
+            return LocalDate.of(year, month, day);
+        }
+        else {
+            throw new IllegalArgumentException("Invalid format");
+        }
     }
 
 
