@@ -8,11 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -27,7 +22,6 @@ public class MatchesCSVReader {
     public MatchesCSVReader() {
         this.matchesList = new LinkedList<>();
         this.matchesList = getAllMatches();
-
     }
 
     private List<Matches> getAllMatches() {

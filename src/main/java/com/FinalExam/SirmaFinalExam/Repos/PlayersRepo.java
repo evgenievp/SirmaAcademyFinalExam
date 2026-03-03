@@ -8,4 +8,3 @@ import java.util.Optional;
 
 public interface PlayersRepo extends JpaRepository<Players, Integer> {
 }
-
