@@ -63,6 +63,8 @@ Explanation of the approach used in the project:
     6. Another CTE called top_players_pair get first pair of players from total_time when order total_minutes in descending order.
     7. Altogether - using top_players_pair we get the best pairs of players, matches_ids and minutes, but query depends on names.. so it won't work if we have two players with exact same names, which is possible.
 
+NB:If /api/deleteAll is used already - the best rerun application, before try to use /api/initAll, otherwise initAll will result in error, because of manual creation of tables via schema.sql.
+So - /api/deleteAll is designed to be used for cleaning after application is used.
 
 Additional GET endpoints:
     /api/players/get/{id}

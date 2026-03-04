@@ -43,7 +43,7 @@ public class TeamsService {
         return new TeamDto(
                 team.getName(),
                 team.getManagerFullName(),
-                team.getteamGroup()
+                team.getTeamGroup()
         );
     }
 
@@ -71,7 +71,7 @@ public class TeamsService {
         Teams teamEntity = team.get();
         teamEntity.setManagerFullName(dto.getManagerFullName());
         teamEntity.setName(dto.getName());
-        teamEntity.setteamGroup(dto.getTeamGroup());
+        teamEntity.setTeamGroup(dto.getTeamGroup());
         this.teamsRepo.save(teamEntity);
     }
 

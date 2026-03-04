@@ -73,4 +73,7 @@ public class Players {
         this.teamId = teamId;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }

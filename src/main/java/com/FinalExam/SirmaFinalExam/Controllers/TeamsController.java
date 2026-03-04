@@ -42,7 +42,7 @@ public class TeamsController {
     private TeamDto convertTeamToDto(Teams team) {
         return new TeamDto(team.getName(),
                 team.getManagerFullName(),
-                team.getteamGroup());
+                team.getTeamGroup());
     }
 
     @PostMapping("/delete/{id}")
