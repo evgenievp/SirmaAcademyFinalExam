@@ -56,7 +56,13 @@ Explanation of the approach used in the project:
     The query returns the pair of players, the matches in which they played together, and the calculated minutes played together.
     My idea with SQL query was at first (before I realize there are may be two endpoints - just players with time, and more complicated query which invloves additional info):
     1. I need to find out pair of players (at leas two times called records and players tables).
-    2. What info I want to show? I used: player names, 
+    2. What info I want to show? I used: player names, matchesid and playing minutes for every match.
+    3. So my approach to SQL query was - players, matches id, total_minutes for player and minutes together.
+    4. Due to complicated query - I used three additional CTE selections - match details which contains. This query gave minutes of playing for every pair with extraction of maximal start minute, and lwoest end minute of play time. Also - this is playing time shared of pair, because player ids are different.
+    5. CTE called total_time returns sum of minutes of every match, not just minutes from one match from first CTE (match_details)
+    6. Another CTE called top_players_pair get first pair of players from total_time when order total_minutes in descending order.
+    7. Altogether - using top_players_pair we get the best pairs of players, matches_ids and minutes, but query depends on names.. so it won't work if we have two players with exact same names, which is possible.
+
 
 Additional GET endpoints:
     /api/players/get/{id}
