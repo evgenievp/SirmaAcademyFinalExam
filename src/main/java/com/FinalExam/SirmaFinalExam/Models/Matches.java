@@ -26,6 +26,14 @@ public class Matches {
     private int HomeTeamGoals;
     private int AwayTeamGoals;
 
+    @ManyToOne
+    @JoinColumn(name="a_team_id")
+    private Teams aTeam;
+
+    @ManyToOne
+    @JoinColumn(name="b_team_id")
+    private Teams bTeam;
+
     public Matches(int ATeamId,
                    int BTeamId,
                    LocalDate date,

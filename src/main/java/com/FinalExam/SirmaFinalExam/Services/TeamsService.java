@@ -5,6 +5,9 @@ import com.FinalExam.SirmaFinalExam.Dtos.TeamDto;
 import com.FinalExam.SirmaFinalExam.Models.Teams;
 import com.FinalExam.SirmaFinalExam.Repos.TeamsRepo;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -80,4 +83,10 @@ public class TeamsService {
             throw new EntityNotFoundException("No team with this id in db");
         }
     }
+
+    public void dropTableTeams() {
+        this.teamsRepo.dropTable();
+    }
+
+
 }

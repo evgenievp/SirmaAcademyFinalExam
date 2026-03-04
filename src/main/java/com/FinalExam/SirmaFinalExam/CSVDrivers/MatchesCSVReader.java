@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -106,13 +105,12 @@ public class MatchesCSVReader {
         So I will use KISS principle - change just places of year/month and day with any symbol separator
         I mean... ANY symbol separator... Maybe this is not the best solution, but... I did it */
         Pattern pattern1 = Pattern.compile("(0?[1-9]|1[0-2]).(0?[1-9]|[12][0-9]|3[01]).(20[0-9]{2})"); //mm/dd/yyyy
-        Pattern pattern2 = Pattern.compile("(0?[1-9]|[12][0-9]|3[01]).(0?[1-9]|1[0-2]).(20[0-9]{2})"); //dd/mm/yyyy
+        Pattern pattern2 = Pattern.compile("(0?[1-9]|1[0-2]).(20[0-9]{2}).(0?[1-9]|[12][0-9]|3[01])"); //mm/yyyy/dd
         Pattern pattern3 = Pattern.compile("(20[0-9]{2}).(0?[1-9]|1[0-2]).(0?[1-9]|[12][0-9]|3[01])"); //yyyy/mm/dd
         Pattern pattern4 = Pattern.compile("(20[0-9]{2}).(0?[1-9]|[12][0-9]|3[01]).(0?[1-9]|1[0-2])"); //yyyy/dd/mm
-        Pattern pattern5 = Pattern.compile("(0?[1-9]|[12][0-9]|3[01]).(20[0-9]{2}).(0?[1-9]|1[0-2])"); //dd/yyyy/mm
-        Pattern pattern6 = Pattern.compile("(0?[1-9]|1[0-2]).(20[0-9]{2}).(0?[1-9]|[12][0-9]|3[01])"); //mm/yyyy/dd
-
-        List<Pattern> patterns = List.of(pattern1,
+        Pattern pattern5 = Pattern.compile("(0?[1-9]|[12][0-9]|3[01]).(0?[1-9]|1[0-2]).(20[0-9]{2})"); //dd/mm/yyyy
+        Pattern pattern6 = Pattern.compile("(0?[1-9]|[12][0-9]|3[01]).(20[0-9]{2}).(0?[1-9]|1[0-2])"); //dd/yyyy/mm
+       List<Pattern> patterns = List.of(pattern1,
                 pattern2,
                 pattern3,
                 pattern4,
@@ -126,7 +124,7 @@ public class MatchesCSVReader {
                 {2,3,1},
                 {2,1,3}
         };
-        // These dummy variables will result in year in case of really big edge case or intentionally bad csv file.
+        // These dummy variables will result in year in case of really big edge case or intentionally bad csv input.
         int year = 1000;
         int day = 20;
         int month = 10;
@@ -141,7 +139,6 @@ public class MatchesCSVReader {
         }
         return LocalDate.of(year, month, day);
     }
-
 
     public List<Matches> getMatchesList() {
         return matchesList;

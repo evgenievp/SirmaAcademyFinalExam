@@ -49,4 +49,7 @@ public class RecordsService {
         );
     }
 
+    public void dropTableRecords() {
+        this.recordsRepo.dropTable();
+    }
 }

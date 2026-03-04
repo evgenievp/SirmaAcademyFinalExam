@@ -14,14 +14,14 @@ Backend setup:
 
 Database configuration is public because these credentials are dummy (no need to hide them):
   database user: springUser
-  database password: newPass123
+  database password: newPass123.
   SQL Server port: 59161
 
 Used Spring dependencies:
   SQL Server Driver
-  Spring Security (basic security filter chain configured, CSRF disabled and all requests allowed)
-  Validation
-  Spring Web
+  Spring Security (basic security filter chain configured, CSRF disabled and all requests allowed),
+  Validation,
+  Spring Web,
   Lombok
 
 API Endpoints
@@ -49,11 +49,14 @@ API Endpoints
 
 Explanation of the approach used in the project:
     The provided CSV files are read manually without using external CSV libraries. This is done through the endpoint /api/initAll. Please note that CSVReaders works with relative paths. They are located in: src/main/resources/csv_files/...
-    The parsed data is stored in lists of model objects (LinkedList is used due to the expected larger amount of data).
+    I used Regular Expression for data parse in order to cover different date formats (literally any separator is valid separator). Next step is to store parsed data in lists of model objects (LinkedList is used due to the expected larger amount of data).
     These model lists are then persisted as SQL tables in the database (the same /api/initAll endpoint saves them into the database).
     REST controllers allow operations over the stored data such as adding, removing, or editing records.
     The main goal is to find the pair of players who have played together for the longest total time. This is calculated using a native SQL query executed through JPA.
     The query returns the pair of players, the matches in which they played together, and the calculated minutes played together.
+    My idea with SQL query was at first (before I realize there are may be two endpoints - just players with time, and more complicated query which invloves additional info):
+    1. I need to find out pair of players (at leas two times called records and players tables).
+    2. What info I want to show? I used: player names, 
 
 Additional GET endpoints:
     /api/players/get/{id}

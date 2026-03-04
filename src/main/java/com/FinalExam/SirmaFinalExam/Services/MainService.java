@@ -22,4 +22,12 @@ public class MainService {
         return this.mainRepo.pairOfPlayers();
     }
 
+    public void initAdditionalSQLFunctions() {
+        this.mainRepo.createMaxMinutesFunction();
+        this.mainRepo.createMinMinutesFunction();
+    }
+
+    public void dropMyCustomFunctions() {
+        this.mainRepo.dropCustomFunctions();
+    }
 }

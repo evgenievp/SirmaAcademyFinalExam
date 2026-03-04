@@ -5,7 +5,6 @@ import com.FinalExam.SirmaFinalExam.Dtos.PlayerDto;
 import com.FinalExam.SirmaFinalExam.Models.Players;
 import com.FinalExam.SirmaFinalExam.Repos.PlayersRepo;
 import jakarta.persistence.EntityNotFoundException;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -93,5 +92,9 @@ public class PlayersService {
             throw new EntityNotFoundException("No player with this id in db");
         }
         return convertPlayerToDto(player.get());
+    }
+
+    public void dropTablePlayers() {
+        this.playersRepo.dropTable();
     }
 }

@@ -1,14 +1,15 @@
 package com.FinalExam.SirmaFinalExam.Repos;
 
 import com.FinalExam.SirmaFinalExam.Models.Records;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface MainRepo extends JpaRepository<Records, Integer> {
     /* This sql request crushed me - no kidding. Here are some thoughts about the task:
-    I had variant with additional functions which compare given minutes and returns greatest and smallest minutes.
     I shall leave it as it is here. The reason concerns the fact I haven't had enough information to deduce playing time
     of player which played in match with knocked out time precisely. We have matches which had penalties, but penalties come
     after at least 120 minutes of playing time. So. if I try to set playing time to 120 minutes of every match which
@@ -71,10 +72,10 @@ public interface MainRepo extends JpaRepository<Records, Integer> {
     @Query(nativeQuery = true, value = """
             with players_and_minutes as (
                 select p1.full_name as player_1, p2.full_name as player_2, sum(
-                dbo.getMinMinutes(r1.to_minutes, r2.to_minutes) -\s
+                dbo.getMinMinutes(r1.to_minutes, r2.to_minutes) -
                 dbo.getMaxMinutes(r1.from_minutes, r2.from_minutes))
                 as total_minutes
-                from records r1\s
+                from records r1
                 JOIN records r2 on r1.match_id = r2.match_id
                 join players p1 on p1.id = r1.player_id
                 join players p2 on p2.id = r2.player_id
@@ -87,4 +88,41 @@ public interface MainRepo extends JpaRepository<Records, Integer> {
             
             """)
     Object[] pairOfPlayers();
+
+
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true, value = """
+        create or alter function getMaxMinutes(@first_minutes int, @second_minutes int) 
+        returns int
+        as
+        begin
+            if (@first_minutes < @second_minutes)
+                return @second_minutes
+            return @first_minutes
+        end
+    """)
+    void createMaxMinutesFunction();
+
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true, value = """
+        create or alter function getMinMinutes(@first_minutes int, @second_minutes int)
+        returns int
+        as
+        begin
+            if (@first_minutes < @second_minutes)
+                return @first_minutes
+            return @second_minutes
+        end
+    """)
+    void createMinMinutesFunction();
+
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true, value = """
+            drop function getMaxMinutes;
+            drop function getMinMinutes;
+            """)
+    void dropCustomFunctions();
 }

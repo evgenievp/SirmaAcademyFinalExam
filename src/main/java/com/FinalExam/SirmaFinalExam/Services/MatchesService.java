@@ -92,4 +92,8 @@ public class MatchesService {
         matchEntity.setAwayTeamGoals(dto.getAwayScore());
         this.matchesRepo.save(matchEntity);
     }
+
+    public void dropTableMatches() {
+        this.matchesRepo.dropTable();
+    }
 }

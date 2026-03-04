@@ -20,7 +20,10 @@ public class MainController {
     private final MatchesService matchesService;
 
     public MainController(MainService mainService,
-                          PlayersService playersService, TeamsService teamsService, RecordsService recordsService, MatchesService matchesService) {
+                          PlayersService playersService,
+                          TeamsService teamsService,
+                          RecordsService recordsService,
+                          MatchesService matchesService) {
         this.mainService = mainService;
         this.playersService = playersService;
         this.teamsService = teamsService;
@@ -41,8 +44,9 @@ public class MainController {
 
     @PostMapping("/initAll")
     public ResponseEntity saveEverything() {
-        this.playersService.saveAllPlayers();
+        this.mainService.initAdditionalSQLFunctions();
         this.teamsService.saveAllTeams();
+        this.playersService.saveAllPlayers();
         this.recordsService.saveAllRecords();
         this.matchesService.saveAllMatches();
         return ResponseEntity.status(201).body("Everything is now on db");
@@ -51,10 +55,11 @@ public class MainController {
 
     @PostMapping("/deleteAll")
     public ResponseEntity deleteEverything() {
-        playersService.deleteAllPlayers();
-        teamsService.deleteAllTeams();
-        matchesService.deleteAllMatches();
-        recordsService.deleteAllRecords();
+        recordsService.dropTableRecords();
+        matchesService.dropTableMatches();
+        playersService.dropTablePlayers();
+        teamsService.dropTableTeams();
+        mainService.dropMyCustomFunctions();
         return ResponseEntity.status(200).body("Everything is deleted");
     }
 
