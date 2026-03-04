@@ -26,45 +26,47 @@ public interface MainRepo extends JpaRepository<Records, Integer> {
 
      */
     @Query(nativeQuery = true, value = """
-    with match_details as (
-        select 
-            p1.full_name as player_1, 
-            p2.full_name as player_2,
-            r1.match_id,
-            case when r1.to_minutes < r2.to_minutes 
-                 then r1.to_minutes else r2.to_minutes end
-            - case when r1.from_minutes > r2.from_minutes 
-                 then r1.from_minutes else r2.from_minutes end as minutes_together
-        from records r1
-        join records r2 on r1.match_id = r2.match_id
-        join players p1 on p1.id = r1.player_id
-        join players p2 on p2.id = r2.player_id
-        where r1.player_id < r2.player_id
-          and r1.from_minutes < r2.to_minutes
-          and r2.from_minutes < r1.to_minutes
-    ),
-    total_time as (
-        select 
-            player_1, 
-            player_2,
-            sum(minutes_together) as total_minutes
-        from match_details
-        group by player_1, player_2
-    ),
-    top_players_pair as (
-        select top 1 player_1, player_2, total_minutes
-        from total_time
-        order by total_minutes desc
-    )
-    select 
-        tp.player_1,
-        tp.player_2,
-        tp.total_minutes,
-        md.match_id,
-        md.minutes_together
-    from top_players_pair tp
-    join match_details md on md.player_1 = tp.player_1 and md.player_2 = tp.player_2
-    order by md.minutes_together desc
+            
+     with match_details as (
+         select
+             p1.full_name as player_1,
+             p2.full_name as player_2,
+             r1.match_id,
+             (dbo.getMinMinutes(r1.to_minutes, r2.to_minutes) -
+             dbo.getMaxMinutes(r1.from_minutes, r2.from_minutes))
+             as minutes_together
+         from records r1
+         join records r2 on r1.match_id = r2.match_id
+         join players p1 on p1.id = r1.player_id
+         join players p2 on p2.id = r2.player_id
+         where r1.player_id < r2.player_id
+           and r1.from_minutes < r2.to_minutes
+           and r2.from_minutes < r1.to_minutes
+     ),
+     total_time as (
+         select
+             player_1,
+             player_2,
+             sum(minutes_together) as total_minutes
+         from match_details
+         group by player_1, player_2
+     ),
+     top_players_pair as (
+         select top 1 player_1, player_2, total_minutes
+         from total_time
+         order by total_minutes desc
+     )
+     select
+         tp.player_1,
+         tp.player_2,
+         tp.total_minutes,
+         md.match_id,
+         md.minutes_together
+     from top_players_pair tp
+     join match_details md on md.player_1 = tp.player_1
+     and md.player_2 = tp.player_2
+     order by md.minutes_together desc
+           
 """)
     List<Object[]> getPlayerPairsWithMostTime();
 
