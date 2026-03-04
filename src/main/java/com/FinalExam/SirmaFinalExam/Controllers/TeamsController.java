@@ -28,7 +28,7 @@ public class TeamsController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<Teams> getTeamById(@PathVariable int id) {
+    public ResponseEntity<TeamDto> getTeamById(@PathVariable int id) {
         return ResponseEntity.status(200).body(this.teamsService.findTeamById(id));
     }
 
@@ -36,7 +36,7 @@ public class TeamsController {
     @PatchMapping("/edit/{id}")
     public ResponseEntity<TeamDto> editTeam(@Valid @RequestBody TeamDto dto, @PathVariable int id) {
         this.teamsService.editTeam(dto, id);
-        return ResponseEntity.status(200).body(this.convertTeamToDto(this.teamsService.findTeamById(id)));
+        return ResponseEntity.status(200).body(this.teamsService.findTeamById(id));
     }
 
     private TeamDto convertTeamToDto(Teams team) {
@@ -47,8 +47,7 @@ public class TeamsController {
 
     @PostMapping("/delete/{id}")
     public ResponseEntity deleteTeamById(@PathVariable int id) {
-        Teams team = this.teamsService.findTeamById(id);
-        TeamDto dto = convertTeamToDto(team);
+        TeamDto dto = this.teamsService.findTeamById(id);
         this.teamsService.deleteTeamById(id);
         return ResponseEntity.status(200).body(dto);
     }

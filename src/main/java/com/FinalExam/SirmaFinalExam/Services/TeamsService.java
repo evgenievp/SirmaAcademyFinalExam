@@ -55,12 +55,12 @@ public class TeamsService {
         );
     }
 
-    public Teams findTeamById(int id) {
+    public TeamDto findTeamById(int id) {
         Optional<Teams> team = this.teamsRepo.findById(id);
         if (team.isEmpty()) {
             throw new EntityNotFoundException("Team with that id isn't in this db");
         }
-        return team.get();
+        return convertTeamToDto(team.get());
     }
 
     public void editTeam(TeamDto dto, int id) {

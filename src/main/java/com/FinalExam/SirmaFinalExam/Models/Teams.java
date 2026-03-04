@@ -61,4 +61,8 @@ public class Teams {
     public void setTeamGroup(char teamGroup) {
         this.teamGroup = teamGroup;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
