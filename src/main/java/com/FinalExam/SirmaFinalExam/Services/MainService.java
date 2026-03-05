@@ -10,8 +10,8 @@ public class MainService {
     private final MainRepo mainRepo;
 
 
-    public MainService(MainRepo mainRepo, MainRepo mainRepo1) {
-        this.mainRepo = mainRepo1;
+    public MainService(MainRepo mainRepo) {
+        this.mainRepo = mainRepo;
     }
 
     public List<Object[]> getMostTimePlayedPlayersPair() {

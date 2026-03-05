@@ -23,7 +23,9 @@ public interface MainRepo extends JpaRepository<Records, Integer> {
     At next place: How can I decide which pair of players is winning pair if there are two teams which had exactly
     the same minutes of play time (exactly the same count of matches with penalties and exactly the same additional
     minutes). We haven't such criteria stated clearly. In football decision would be in favor of the winner (probably).
-
+    Below repo I show all this weaknesses with another advanced SQL query which show also team(nationality of both players).
+    Since we have in mind only regular playing time, when I add team to query result - players are different - Dani Carvajal
+    and Robin Le Normand - they are from Spain.
      */
     @Query(nativeQuery = true, value = """
             
@@ -128,3 +130,63 @@ public interface MainRepo extends JpaRepository<Records, Integer> {
             """)
     void dropCustomFunctions();
 }
+
+/*
+    with match_details as (
+        select
+            p1.full_name as player_1,
+            p2.full_name as player_2,
+            p1.id as p1_id,
+            p2.id as p2_id,
+            r1.match_id,
+            (dbo.getMinMinutes(r1.to_minutes, r2.to_minutes) -
+            dbo.getMaxMinutes(r1.from_minutes, r2.from_minutes)) as minutes_together
+        from records r1
+        join records r2 on r1.match_id = r2.match_id
+        join players p1 on p1.id = r1.player_id
+        join players p2 on p2.id = r2.player_id
+        where r1.player_id < r2.player_id
+          and r1.from_minutes < r2.to_minutes
+          and r2.from_minutes < r1.to_minutes
+    ),
+    total_time as (
+        select
+            player_1,
+            player_2,
+            p1_id,
+            p2_id,
+            sum(minutes_together) as total_minutes
+        from match_details
+        group by player_1, player_2, p1_id, p2_id
+    ),
+    top_players_pair as (
+        select top 1 player_1,
+        player_2,
+        total_minutes,
+        p1_id,
+        p2_id
+        from total_time
+        order by total_minutes desc
+    ),
+
+    players_team as (
+        select p1_id,
+        p2_id,
+        t.name as players_nationality
+        from top_players_pair
+        join players pl on pl.id = p1_id
+        join teams t on t.id = pl.team_id
+    )
+
+    select
+        tp.player_1,
+        tp.player_2,
+        tp.total_minutes,
+        md.match_id,
+        md.minutes_together,
+        players_nationality
+    from top_players_pair tp
+    join match_details md on md.p1_id = tp.p1_id and md.p2_id = tp.p2_id
+    join players_team on tp.p1_id = players_team.p1_id
+    order by md.minutes_together, player_1 desc
+*/

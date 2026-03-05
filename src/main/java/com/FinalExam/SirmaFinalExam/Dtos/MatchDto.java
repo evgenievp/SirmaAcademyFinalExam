@@ -22,7 +22,6 @@ public class MatchDto {
     @NotNull(message = "Team A Id must be valid")
     private int BTeamId;
     @NotNull
-    @NotBlank
     private LocalDate date;
     @Min(value = 0)
     private int homeScore;

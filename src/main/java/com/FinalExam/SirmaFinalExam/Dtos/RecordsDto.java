@@ -17,19 +17,15 @@ public class RecordsDto {
 
 //playerId, matchId, fromMinutes, toMinutes
     @NotNull
-    @NotBlank
     @Min(value = 1)
     private int playerId;
     @NotNull
-    @NotBlank
     @Min(value = 1)
     private int matchId;
     @NotNull
-    @NotBlank
     @Min(value = 1)
     private int fromMinutes;
     @NotNull
-    @NotBlank
     @Min(value = 0)
     @Max(value = 90) // Since we are working with regular time and without additional minutes - 90 is max minutes of playtime
     private int toMinutes;
