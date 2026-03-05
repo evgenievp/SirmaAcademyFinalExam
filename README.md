@@ -1,16 +1,14 @@
 Sirma Final Exam
 
-This is a Spring Boot application designed to solve an SQL query task about a pair of football players from EURO 2024 who played together in the same matches for the longest time.
-The main SQL query is executed through a GET request. The application also includes CRUD operations for matches, players, teams, and records. 
+This is a Spring Boot application designed to solve an SQL query task about a pair of football players from EURO 2024 which played together in the same matches for the longest time.
+The main SQL query is executed through a GET request. The application also includes CRUD operations for matches, players and teams. 
 
 Technologies used:
-  Java 21
-  MSSQL
-  Spring Boot
-  JPA
+  - Java 21 
+  - MSSQL
+  - Spring Boot  
+  - JPA
 
-Backend setup:
-  A working IntelliJ IDEA environment with Microsoft SQL Server installed.
 
 Database configuration is public because these credentials are dummy (no need to hide them):
   database user: springUser
@@ -18,107 +16,110 @@ Database configuration is public because these credentials are dummy (no need to
   SQL Server port: 59161
 
 Used Spring dependencies:
-  SQL Server Driver
-  Spring Security (basic security filter chain configured, CSRF disabled and all requests allowed),
-  Validation,
-  Spring Web,
-  Lombok
+  - SQL Server Driver
+  - Spring Security (basic security filter chain configured, CSRF disabled and all requests allowed),
+  - Validation,
+  - Spring Web,
+  - Lombok
 
 API Endpoints
-  POST:  
-    /api/initAll - reads the CSV files and writes their data into the database
-    /api/deleteAll - deletes all data from the database
-    /api/players/add
-    /api/players/delete/{id}
-    /api/players/deleteAll
-    /api/matches/add
-    /api/matches/deleteAll
-    /api/matches/saveAll
-    /api/matches/delete/{id}
-    /api/records/saveAll
-    /api/records/deleteAll
-    /api/teams/add
-    /api/teams/saveAll
-    /api/teams/deleteAll
-    /api/teams/delete/{id}
+  - POST:  
+    - /api/initAll - reads the CSV files and writes their data into the database
+    - /api/deleteAll - deletes all data from the database
+    - /api/players/add
+    - /api/players/delete/{id}
+    - /api/players/deleteAll
+    - /api/matches/add
+    - /api/matches/deleteAll
+    - /api/matches/saveAll
+    - /api/matches/delete/{id}
+    - /api/records/saveAll
+    - /api/records/deleteAll
+    - /api/teams/add
+    - /api/teams/saveAll
+    - /api/teams/deleteAll
+    - /api/teams/delete/{id}
 
 
-  GET:
-    /api/pair-played-most-time-info - returns the pair of players who played together for the longest time according to the implemented algorithm. With the provided CSV files the result is a table containing 7 matches with a total of 630 minutes played together by Declan Rice and Bukayo Saka, including match IDs and minutes played together.
-    /api/just-pair - this endpoint return names of players with total minutes together.
+  - GET:
+    - /api/pair-played-most-time-info - returns the pair of players who played together for the longest time according to the implemented algorithm. With the provided CSV files the result is a table containing 7 matches with a total of 630 minutes played together by Declan Rice and Bukayo Saka, including match IDs and minutes played together.
+    - /api/just-pair - this endpoint return names of players with total minutes together.
+    - /api/players/get/{id}
+    - /api/teams/get/{id}
+    - /api/teams/getAll
+    - /api/matches/getAll
+    - /api/matches/get/{id}
+    - /api/players/get
+    - /api/records/getAll
 
-Explanation of the approach used in the project:
-    The provided CSV files are read manually without using external CSV libraries. This is done through the endpoint /api/initAll. Please note that CSVReaders works with relative paths. They are located in: src/main/resources/csv_files/...
-    I used Regular Expression for data parse in order to cover different date formats (literally any separator is valid separator). Next step is to store parsed data in lists of model objects (LinkedList is used due to the expected larger amount of data).
-    These model lists are then persisted as SQL tables in the database (the same /api/initAll endpoint saves them into the database).
-    REST controllers allow operations over the stored data such as adding, removing, or editing records.
-    The main goal is to find the pair of players who have played together for the longest total time. This is calculated using a native SQL query executed through JPA.
-    The query returns the pair of players, the matches in which they played together, and the calculated minutes played together.
-    My idea with SQL query was at first (before I realize there are may be two endpoints - just players with time, and more complicated query which invloves additional info):
-    1. I need to find out pair of players (at leas two times called records and players tables).
-    2. What info I want to show? I used: player names, matchesid and playing minutes for every match.
-    3. So my approach to SQL query was - players, matches id, total_minutes for player and minutes together.
-    4. Due to complicated query - I used three additional CTE selections - match details which contains. This query gave minutes of playing for every pair with extraction of maximal start minute, and lwoest end minute of play time. Also - this is playing time shared of pair, because player ids are different.
-    5. CTE called total_time returns sum of minutes of every match, not just minutes from one match from first CTE (match_details)
-    6. Another CTE called top_players_pair get first pair of players from total_time when order total_minutes in descending order.
-    7. Altogether - using top_players_pair we get the best pairs of players, matches_ids and minutes, but query depends on names.. so it won't work if we have two players with exact same names, which is possible.
+ - PATCH endpoints:
+   - /api/players/edit/{id}
+   - /api/teams/edit/{id}
+   - /api/matches/edit/{id}
 
 NB:If /api/deleteAll is used already - the best rerun application, before try to use /api/initAll, otherwise initAll will result in error, because of manual creation of tables via schema.sql.
 So - /api/deleteAll is designed to be used for cleaning after application is used.
 
-Additional GET endpoints:
-    /api/players/get/{id}
-    /api/teams/get/{id}
-    /api/teams/getAll
-    /api/matches/getAll
-    /api/matches/get/{id}
-    /api/players/get
-    /api/records/getAll
+Explanation of the approach used in the project:
+The provided CSV files are read manually without using external CSV libraries. This is done through the endpoint /api/initAll. Please note that CSVReaders works with relative paths. They are located in: src/main/resources/csv_files/...
+I used Regular Expression for data parse in order to cover different date formats (literally any separator is valid separator). Next step is to store parsed data in lists of model objects (LinkedList is used due to the expected larger amount of data).
+These model lists are then persisted as SQL tables in the database (the same /api/initAll endpoint saves them into the database).
+REST controllers allow operations over the stored data such as adding, removing, or editing records.
+The main goal is to find the pair of players who have played together for the longest total time. This is calculated using a native SQL query executed through JPA.
+The query returns the pair of players, the matches in which they played together, and the calculated minutes played together.
+My idea with SQL query was at first (before I realize there are may be two endpoints - just players with time, and more complicated query which invloves additional info):
 
-PATCH endpoints:
-    /api/players/edit/{id}
-    /api/teams/edit/{id}
-    /api/matches/edit/{id}
+1. I need to find out pair of players (at leas two times called records and players tables).
+2. What info I want to show? I used: player names, matchesid and playing minutes for every match.
+3. So my approach to SQL query was - players, matches id, total_minutes for player and minutes together.
+4. Due to complicated query - I used three additional CTE selections - match details which contains. This query gave minutes of playing for every pair with extraction of maximal start minute, and lwoest end minute of play time. Also - this is playing time shared of pair, because player ids are different.
+5. CTE called total_time returns sum of minutes of every match, not just minutes from one match from first CTE (match_details)
+6. Another CTE called top_players_pair get first pair of players from total_time when order total_minutes in descending order.
+7. Altogether - using top_players_pair we get the best pairs of players, matches_ids and minutes, but query depends on names.. so it won't work if we have two players with exact same names, which is possible.
 
+Backend setup:
+- A working IntelliJ IDEA environment with Microsoft SQL Server installed.
 
 Run the Application:
-  Run SQL Server.
-  Create a database that will be used by the application (or change the credentials in application.properties).
-  Note: If you use a database different from MSSQL, some functionality may not work due to native SQL queries specifics.
-  Open the project in IntelliJ IDEA.
-  Build the project and run the Spring Boot application.
-  Use Postman or another REST client to call the endpoints.
-  If you want to use the existing CSV files:
-  Call POST /api/initAll to load the data from the CSV files into the database.
+
+    - Run SQL Server.
+    - Create a database that will be used by the application (or change the credentials in application.properties).
+        Note: If you use a database different from MSSQL, some functionality may not work due to native SQL queries specifics.
+    - Open the project in IntelliJ IDEA.
+    - Build the project and run the Spring Boot application.
+    - Use Postman or another REST client to call the endpoints. 
+    - If you want to use the existing CSV files:
+    Call POST /api/initAll to load the data from the CSV files into the database.
   
-  Call GET /api/pair-played-most-time-info to execute the main task.
+Call GET /api/pair-played-most-time-info to execute the main task.
+
+Note: When adding players, matches or teams the JSON must not contain an id field.
   
-  Example JSON bodies for CRUD endpoints:
-  
-  Note: When adding players, matches or teams the JSON must not contain an id field.
+Example JSON bodies for CRUD endpoints:
 
 For players:
 
-  {
+    {
     "teamNumber": 1,
     "position": "GK",
     "fullName": "Manuel Neuer",
     "teamId": 1
-  }
+    }
 
 For matches:
 
-  {
+    {
     "ATeamId": 1,
     "BTeamId": 2,
     "date": "2024-06-14",
     "homeScore": 5,
     "awayScore": 1
-  }
+    }
 
 For teams:
 
-  {
-    "managerFullName": "Kasper Hjulmand",
-    "name": "Denmark"
-  }
+    {
+        "team_group": "A",
+        "manager_full_name": "Kasper Hjulmand",
+        "name": "Denmark"
+    }
