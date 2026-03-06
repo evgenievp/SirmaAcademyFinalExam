@@ -3,7 +3,9 @@ package com.FinalExam.SirmaFinalExam.Models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 //id, ATeamId, BTeamId, Date, Score
@@ -11,6 +13,8 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(uniqueConstraints= {
     @UniqueConstraint(columnNames = {"a_team_id", "b_team_id"})
 })
@@ -46,49 +50,6 @@ public class Matches {
         this.AwayTeamGoals = awayTeamGoals;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public int getATeamId() {
-        return ATeamId;
-    }
-
-    public void setATeamId(int ATeamId) {
-        this.ATeamId = ATeamId;
-    }
-
-    public int getBTeamId() {
-        return BTeamId;
-    }
-
-    public void setBTeamId(int BTeamId) {
-        this.BTeamId = BTeamId;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public int getHomeTeamGoals() {
-        return HomeTeamGoals;
-    }
-
-    public void setHomeTeamGoals(int homeTeamGoals) {
-        HomeTeamGoals = homeTeamGoals;
-    }
-
-    public int getAwayTeamGoals() {
-        return AwayTeamGoals;
-    }
-
-    public void setAwayTeamGoals(int awayTeamGoals) {
-        AwayTeamGoals = awayTeamGoals;
-    }
 
     @PrePersist
     @PreUpdate
@@ -98,7 +59,5 @@ public class Matches {
         }
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 }

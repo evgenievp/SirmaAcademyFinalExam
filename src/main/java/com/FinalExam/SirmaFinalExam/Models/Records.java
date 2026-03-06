@@ -4,12 +4,16 @@ package com.FinalExam.SirmaFinalExam.Models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 //id, playerId, matchId, fromMinutes, toMinutes
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Records {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,39 +35,4 @@ public class Records {
         this.toMinutes = toMinutes;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public int getPlayerId() {
-        return playerId;
-    }
-
-    public void setPlayerId(int playerId) {
-        this.playerId = playerId;
-    }
-
-    public int getMatchId() {
-        return matchId;
-    }
-
-    public void setMatchId(int matchId) {
-        this.matchId = matchId;
-    }
-
-    public int getFromMinutes() {
-        return fromMinutes;
-    }
-
-    public void setFromMinutes(int fromMinutes) {
-        this.fromMinutes = fromMinutes;
-    }
-
-    public int getToMinutes() {
-        return toMinutes;
-    }
-
-    public void setToMinutes(int toMinutes) {
-        this.toMinutes = toMinutes;
-    }
 }

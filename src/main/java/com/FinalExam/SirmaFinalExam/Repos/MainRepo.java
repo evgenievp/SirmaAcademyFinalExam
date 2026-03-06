@@ -23,7 +23,7 @@ public interface MainRepo extends JpaRepository<Records, Integer> {
     At next place: How can I decide which pair of players is winning pair if there are two teams which had exactly
     the same minutes of play time (exactly the same count of matches with penalties and exactly the same additional
     minutes). We haven't such criteria stated clearly. In football decision would be in favor of the winner (probably).
-    Below repo I show all this weaknesses with another advanced SQL query which show also team(nationality of both players).
+    Below repo I show all these weaknesses with another advanced SQL query which show also team(nationality of both players).
     Since we have in mind only regular playing time, when I add team to query result - players are different - Dani Carvajal
     and Robin Le Normand - they are from Spain.
      */

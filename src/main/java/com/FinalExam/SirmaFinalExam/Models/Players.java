@@ -4,13 +4,17 @@ package com.FinalExam.SirmaFinalExam.Models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
 @Table(name = "players")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Players {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,43 +41,4 @@ public class Players {
         this.teamId = teamId;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public int getTeamNumber() {
-        return teamNumber;
-    }
-
-    public void setTeamNumber(int teamNumber) {
-        this.teamNumber = teamNumber;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public int getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }
